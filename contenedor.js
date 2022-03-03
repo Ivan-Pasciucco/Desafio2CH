@@ -8,7 +8,7 @@ class Contenedor {
 
   async save(element) {
     try {
-      const contenido = fs.readFileSync(this.path);
+      const contenido = await fs.promises.readFile('./productos.txt' , 'utf-8');
       const contenidoParsed = JSON.parse(contenido);
 
       element["id"] = contenidoParsed[contenidoParsed.length - 1].id + 1;
@@ -27,14 +27,15 @@ class Contenedor {
    getById(id) {
     try {
       const productos = this.getAll();
-      return productos.find((producto) => id === producto.id);
+      return 'Producto obtenido', productos.find((producto) => id === producto.id);
     } catch (error) {
       console.log(error);
     }
   }
   getAll() {
     try {
-     const contenido = fs.readFileSync(this.path);
+     const contenido = fs.readFileSync('./productos.txt' , 'utf8');
+     console.log('Producto obtenido');
       return JSON.parse(contenido, null, 3); 
     } catch (error) {
       console.log(error);
@@ -58,14 +59,12 @@ class Contenedor {
   
   async deleteAll() {
     try {
-      fs.writeFileSync("./productos.txt", "");
+      await fs.promises.writeFile("./productos.txt", "");
       console.log('Archivo vaciado');
     } catch (error) {
       console.log(error);
     }
   }
 }
-
- //const productos = new Contenedor("./productos.txt");
 
 module.exports = Contenedor;
